@@ -74,7 +74,8 @@ def create_code(node: HTree) -> List[str]:
     """Returns an array (Python list) of Huffman codes. For each character, use the integer ASCII representation
     as the index into the array, with the resulting Huffman code for that character stored at that location.
     Characters that are unused should have an empty string at that location"""
-    def traverse(node, code, codes):
+
+    def traverse(node: HuffmanNode, code: str, codes: List[str]) -> None:
         """Helper function to traverse the Huffman tree and generate codes"""
         if node:
             if node.char_ascii is not None:
