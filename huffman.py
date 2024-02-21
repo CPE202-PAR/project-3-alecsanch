@@ -75,15 +75,14 @@ def create_code(node: HTree) -> List[str]:
     as the index into the array, with the resulting Huffman code for that character stored at that location.
     Characters that are unused should have an empty string at that location"""
 
-    def traverse(node: HuffmanNode, code: str, codes: List[str]) -> None:
+    def traverse(node: Union[None, HuffmanNode], code: str, codes: List[str]) -> None:
         """Helper function to traverse the Huffman tree and generate codes"""
-        assert node is not None, "Node must not be None"
+        if node is None:
+            return
         if node.char_ascii is not None:
             codes[node.char_ascii] = code
-        if isinstance(node.left, HuffmanNode):
-            traverse(node.left, code + '0', codes)
-        if isinstance(node.right, HuffmanNode):
-            traverse(node.right, code + '1', codes)
+        traverse(node.left, code + '0', codes)
+        traverse(node.right, code + '1', codes)
 
     codes = [''] * 256
     traverse(node, '', codes)
