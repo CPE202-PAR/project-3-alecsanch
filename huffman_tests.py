@@ -11,8 +11,6 @@ class TestList(unittest.TestCase):
     def test_combine(self) -> None:
         a = HuffmanNode(65, 1)
         b = HuffmanNode(66, 2)
-
-        # Test for the case when a is returned
         c = combine(a, None)
         self.assertEqual(c.char_ascii, a.char_ascii)
         self.assertEqual(c.freq, a.freq)
@@ -38,6 +36,7 @@ class TestList(unittest.TestCase):
         else:
             self.fail("Failed to create Huffman node with children a and b")
 
+        # Test for the case when b is returned
         c = combine(b, a)
         if (c.left is not None) and (c.right is not None):
             self.assertEqual(c.left.char_ascii, 65)
