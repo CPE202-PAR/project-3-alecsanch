@@ -91,6 +91,11 @@ class TestList(unittest.TestCase):
         else:
             self.fail("Failed to create Huffman node with children b and a")
 
+    def test_cnt_freq_file_not_found(self) -> None:
+        # Call the function with a non-existent file
+        with self.assertRaises(FileNotFoundError):
+            cnt_freq("nonexistent_file.txt")
+
 
 # Compare files - takes care of CR/LF, LF issues
 def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover

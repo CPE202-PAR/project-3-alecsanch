@@ -49,7 +49,8 @@ def cnt_freq(filename: str) -> List[int]:
                 for char in line:
                     frequencies[ord(char)] += 1
     except FileNotFoundError:
-        pass  # Handle file not found error
+        print("File not found!")  # Print message to indicate file not found
+        raise FileNotFoundError("File not found!")  # Raise FileNotFoundError
     return frequencies
 
 
