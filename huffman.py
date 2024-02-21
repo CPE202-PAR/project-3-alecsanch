@@ -77,13 +77,13 @@ def create_code(node: HTree) -> List[str]:
 
     def traverse(node: HuffmanNode, code: str, codes: List[str]) -> None:
         """Helper function to traverse the Huffman tree and generate codes"""
-        if node:
-            if node.char_ascii is not None:
-                codes[node.char_ascii] = code
-            if node.left:
-                traverse(node.left, code + '0', codes)
-            if node.right:
-                traverse(node.right, code + '1', codes)
+        assert node is not None, "Node must not be None"
+        if node.char_ascii is not None:
+            codes[node.char_ascii] = code
+        if node.left:
+            traverse(node.left, code + '0', codes)
+        if node.right:
+            traverse(node.right, code + '1', codes)
 
     codes = [''] * 256
     traverse(node, '', codes)
