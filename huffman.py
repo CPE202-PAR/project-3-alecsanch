@@ -80,9 +80,9 @@ def create_code(node: HTree) -> List[str]:
         assert node is not None, "Node must not be None"
         if node.char_ascii is not None:
             codes[node.char_ascii] = code
-        if node.left:
+        if isinstance(node.left, HuffmanNode):
             traverse(node.left, code + '0', codes)
-        if node.right:
+        if isinstance(node.right, HuffmanNode):
             traverse(node.right, code + '1', codes)
 
     codes = [''] * 256
