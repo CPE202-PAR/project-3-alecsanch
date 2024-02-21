@@ -80,8 +80,10 @@ def create_code(node: HTree) -> List[str]:
         if node:
             if node.char_ascii is not None:
                 codes[node.char_ascii] = code
-            traverse(node.left, code + '0', codes)
-            traverse(node.right, code + '1', codes)
+            if node.left:
+                traverse(node.left, code + '0', codes)
+            if node.right:
+                traverse(node.right, code + '1', codes)
 
     codes = [''] * 256
     traverse(node, '', codes)
