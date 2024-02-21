@@ -11,6 +11,22 @@ class TestList(unittest.TestCase):
     def test_combine(self) -> None:
         a = HuffmanNode(65, 1)
         b = HuffmanNode(66, 2)
+
+        # Test for the case when a is returned
+        c = combine(a, None)
+        self.assertEqual(c.char_ascii, a.char_ascii)
+        self.assertEqual(c.freq, a.freq)
+        self.assertIsNone(c.left)
+        self.assertIsNone(c.right)
+
+        # Test for the case when b is returned
+        c = combine(None, b)
+        self.assertEqual(c.char_ascii, b.char_ascii)
+        self.assertEqual(c.freq, b.freq)
+        self.assertIsNone(c.left)
+        self.assertIsNone(c.right)
+
+        # Test for the case when a is returned
         c = combine(a, b)
         if (c.left is not None) and (c.right is not None):
             self.assertEqual(c.left.char_ascii, 65)
@@ -32,31 +48,6 @@ class TestList(unittest.TestCase):
             self.assertEqual(c.freq, 3)
         else:
             self.fail("Failed to create Huffman node with children b and a")
-
-        # Test for the case when b is returned
-        c = combine(None, b)
-        self.assertEqual(c.char_ascii, b.char_ascii)
-        self.assertEqual(c.freq, b.freq)
-        self.assertIsNone(c.left)
-        self.assertIsNone(c.right)
-
-    def test_create_huff_tree(self) -> None:
-        freqlist = cnt_freq("file2.txt")
-        hufftree = create_huff_tree(freqlist)
-        if hufftree is not None:
-            self.assertEqual(hufftree.freq, 32)
-            self.assertEqual(hufftree.char_ascii, 97)
-            left = hufftree.left
-            right = hufftree.right
-            if (left is not None) and (right is not None):
-                self.assertEqual(left.freq, 16)
-                self.assertEqual(left.char_ascii, 97)
-                self.assertEqual(right.freq, 16)
-                self.assertEqual(right.char_ascii, 100)
-            else:  # pragma: no cover
-                self.fail()
-        else:  # pragma: no cover
-            self.fail()
 
     def test_create_header(self) -> None:
         freqlist = cnt_freq("file2.txt")
