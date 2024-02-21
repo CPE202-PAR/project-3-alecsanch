@@ -1,6 +1,7 @@
 import unittest
 from huffman import *
 
+
 class TestList(unittest.TestCase):
     def test_cnt_freq(self) -> None:
         freqlist = cnt_freq("file2.txt")
@@ -12,23 +13,23 @@ class TestList(unittest.TestCase):
         b = HuffmanNode(66, 2)
         c = combine(a, b)
         if (c.left is not None) and (c.right is not None):
-            self.assertEqual(c.left.char_ascii,65)
+            self.assertEqual(c.left.char_ascii, 65)
             self.assertEqual(c.left.freq, 1)
             self.assertEqual(c.right.char_ascii, 66)
             self.assertEqual(c.right.freq, 2)
             self.assertEqual(c.char_ascii, 65)
             self.assertEqual(c.freq, 3)
-        else:   # pragma: no cover
+        else:  # pragma: no cover
             self.fail()
         c = combine(b, a)
         if (c.left is not None) and (c.right is not None):
-            self.assertEqual(c.left.char_ascii,65)
+            self.assertEqual(c.left.char_ascii, 65)
             self.assertEqual(c.left.freq, 1)
             self.assertEqual(c.right.char_ascii, 66)
             self.assertEqual(c.right.freq, 2)
             self.assertEqual(c.char_ascii, 65)
             self.assertEqual(c.freq, 3)
-        else:   # pragma: no cover
+        else:  # pragma: no cover
             self.fail()
 
     def test_create_huff_tree(self) -> None:
@@ -44,9 +45,9 @@ class TestList(unittest.TestCase):
                 self.assertEqual(left.char_ascii, 97)
                 self.assertEqual(right.freq, 16)
                 self.assertEqual(right.char_ascii, 100)
-            else: # pragma: no cover
+            else:  # pragma: no cover
                 self.fail()
-        else: # pragma: no cover
+        else:  # pragma: no cover
             self.fail()
 
     def test_create_header(self) -> None:
@@ -66,8 +67,9 @@ class TestList(unittest.TestCase):
         # capture errors by comparing your encoded file with a *known* solution file
         self.assertTrue(compare_files("file1_out.txt", "file1_soln.txt"))
 
+
 # Compare files - takes care of CR/LF, LF issues
-def compare_files(file1: str, file2: str) -> bool: # pragma: no cover
+def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover
     match = True
     done = False
     with open(file1, "r") as f1:
