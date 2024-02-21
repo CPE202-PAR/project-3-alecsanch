@@ -67,7 +67,30 @@ class TestList(unittest.TestCase):
         # capture errors by comparing your encoded file with a *known* solution file
         self.assertTrue(compare_files("file1_out.txt", "file1_soln.txt"))
 
+    def test_combine_01(self) -> None:
+        a = HuffmanNode(65, 1)
+        b = HuffmanNode(66, 2)
+        c = combine(a, b)
+        if (c.left is not None) and (c.right is not None):
+            self.assertEqual(c.left.char_ascii, 65)
+            self.assertEqual(c.left.freq, 1)
+            self.assertEqual(c.right.char_ascii, 66)
+            self.assertEqual(c.right.freq, 2)
+            self.assertEqual(c.char_ascii, 65)
+            self.assertEqual(c.freq, 3)
+        else:
+            self.fail("Failed to create Huffman node with children a and b")
 
+        c = combine(b, a)
+        if (c.left is not None) and (c.right is not None):
+            self.assertEqual(c.left.char_ascii, 65)
+            self.assertEqual(c.left.freq, 1)
+            self.assertEqual(c.right.char_ascii, 66)
+            self.assertEqual(c.right.freq, 2)
+            self.assertEqual(c.char_ascii, 65)
+            self.assertEqual(c.freq, 3)
+        else:
+            self.fail("Failed to create Huffman node with children b and a")
 # Compare files - takes care of CR/LF, LF issues
 def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover
     match = True
