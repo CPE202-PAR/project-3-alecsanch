@@ -23,14 +23,21 @@ def comes_before(a: HuffmanNode, b: HuffmanNode) -> bool:
         return a.char_ascii < b.char_ascii
 
 
-def combine(a: HuffmanNode, b: HuffmanNode) -> HuffmanNode:
+def combine(a: HTree, b: HTree) -> HuffmanNode:
     """Creates a new Huffman node with children a and b, with the "lesser node" on the left
     The new node's frequency value will be the sum of the a and b frequencies
     The new node's char value will be the lower of the a and b char ASCII values"""
-    if comes_before(a, b):
-        return HuffmanNode(a.char_ascii, a.freq + b.freq, a, b)
+    if a is None and b is None:
+        raise ValueError("Both arguments cannot be None")
+    elif a is None:
+        return b
+    elif b is None:
+        return a
     else:
-        return HuffmanNode(b.char_ascii, a.freq + b.freq, b, a)
+        if comes_before(a, b):
+            return HuffmanNode(a.char_ascii, a.freq + b.freq, a, b)
+        else:
+            return HuffmanNode(b.char_ascii, a.freq + b.freq, b, a)
 
 
 def cnt_freq(filename: str) -> List[int]:
