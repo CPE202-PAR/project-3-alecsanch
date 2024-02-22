@@ -90,7 +90,7 @@ class TestHuffman(unittest.TestCase):
         self.assertFalse(node_g < node_h)
         self.assertFalse(node_h < node_g)
 
-    def test_cnt_freq(self) -> None:
+    def test_cnt_freq_01(self) -> None:
         # Test with a sample file
         filename = "sample.txt"
         expected_freq_list = [0] * 256
