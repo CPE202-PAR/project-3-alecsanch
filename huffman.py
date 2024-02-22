@@ -31,7 +31,7 @@ def combine(a: HuffmanNode, b: HuffmanNode) -> HuffmanNode:
         return b
     elif b is None:
         return a
-    if comes_before(a, b):  # Check if a comes before b
+    if comes_before(a, b):
         return HuffmanNode(a.char_ascii, a.freq + b.freq, a, b)
     else:
         return HuffmanNode(b.char_ascii, a.freq + b.freq, b, a)
@@ -73,15 +73,12 @@ def create_code(node: HTree) -> List[str]:
     as the index into the array, with the resulting Huffman code for that character stored at that location.
     Characters that are unused should have an empty string at that location"""
 
-    def traverse(node: 'HuffmanNode', code: str, codes: List[str]) -> None:
-        """Helper function to traverse the Huffman tree and generate codes"""
-        if node is None:
-            return
-        if node.char_ascii is not None:
-            codes[node.char_ascii] = code
-        traverse(node.left, code + '0', codes)
-        traverse(node.right, code + '1', codes)
-
+    def traverse(node: HuffmanNode, code: str, codes: List[str]) -> None:
+        if node:
+            if node.char_ascii is not None:
+                codes[node.char_ascii] = code
+            traverse(node.left, code + '0', codes)
+            traverse(node.right, code + '1', codes)
     codes = [''] * 256
     traverse(node, '', codes)
     return codes
