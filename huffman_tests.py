@@ -97,27 +97,27 @@ class TestList(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             cnt_freq("nonexistent_file.txt")
 
-    def test_create_huff_tree_empty(self):
+    def test_create_huff_tree_empty(self) -> None:
         # Test with empty character frequencies list
-        char_freq = [0] * 256
-        root = create_huff_tree(char_freq)
+        char_freq: List[int] = [0] * 256
+        root: HTree = create_huff_tree(char_freq)
         self.assertIsNone(root)
 
-    def test_create_huff_tree_single_char(self):
+    def test_create_huff_tree_single_char(self) -> None:
         # Test with only one character having non-zero frequency
-        char_freq = [0] * 256
+        char_freq: List[int] = [0] * 256
         char_freq[97] = 5  # Character 'a' with frequency 5
-        root = create_huff_tree(char_freq)
+        root: HTree = create_huff_tree(char_freq)
         self.assertIsInstance(root, HuffmanNode)
         self.assertEqual(root.freq, 5)
 
-    def test_create_huff_tree_multiple_chars(self):
+    def test_create_huff_tree_multiple_chars(self) -> None:
         # Test with multiple characters
-        char_freq = [0] * 256
+        char_freq: List[int] = [0] * 256
         char_freq[97] = 5  # Character 'a' with frequency 5
         char_freq[98] = 3  # Character 'b' with frequency 3
         char_freq[99] = 7  # Character 'c' with frequency 7
-        root = create_huff_tree(char_freq)
+        root: HTree = create_huff_tree(char_freq)
         self.assertIsInstance(root, HuffmanNode)
         self.assertEqual(root.freq, 15)  # Total frequency
         self.assertEqual(root.char_ascii, 99)  # ASCII value of character 'c'
