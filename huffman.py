@@ -74,11 +74,13 @@ def create_code(node: HuffmanNode) -> List[str]:
     Characters that are unused should have an empty string at that location"""
 
     def traverse(node: HuffmanNode, code: str, codes: List[str]) -> None:
-        if node:
-            if node.char_ascii is not None:
-                codes[node.char_ascii] = code
-            traverse(node.left, code + '0', codes)
-            traverse(node.right, code + '1', codes)
+        if node is None:
+            return
+        if node.char_ascii is not None:
+            codes[node.char_ascii] = code
+        traverse(node.left, code + '0', codes)
+        traverse(node.right, code + '1', codes)
+
     codes = [''] * 256
     traverse(node, '', codes)
     return codes
@@ -108,4 +110,7 @@ def huffman_encode(in_file: str, out_file: str) -> None:
         with open(in_file, 'r') as input_file:
             for line in input_file:
                 for char in line:
-                    file.write(codes[ord(char)])
+                    if 0 <= ord(char) < 256:  # Check if the character is within the valid ASCII range
+                        file.write(codes[ord(char)])
+                    else:
+                        print(f"Ignoring character: {char} (Not in valid ASCII range)")
