@@ -162,7 +162,7 @@ class TestHuffman(unittest.TestCase):
             # Check if the encoded content is not empty
             self.assertTrue(encoded_content)
 
-    def test_encode_non_empty_file(self):
+    def test_encode_non_empty_file(self) -> None:
         # Test encoding a non-empty file with multiple unique characters
         input_file = "non_empty_file.txt"
         output_file = "non_empty_file_out.txt"
@@ -176,7 +176,7 @@ class TestHuffman(unittest.TestCase):
             encoded_content = f.read()
             self.assertTrue(encoded_content)
 
-    def test_encode_empty_file(self):
+    def test_encode_empty_file(self) -> None:
         # Test encoding an empty file
         input_file = "empty_file.txt"
         output_file = "empty_file_out.txt"
@@ -190,7 +190,7 @@ class TestHuffman(unittest.TestCase):
             encoded_content = f.read()
             self.assertEqual(encoded_content.strip(), "")  # Adjusted expected output
 
-    def test_encode_single_character_file(self):
+    def test_encode_single_character_file(self) -> None:
         # Test encoding a file with only one unique character
         input_file = "single_character_file.txt"
         output_file = "single_character_file_out.txt"
