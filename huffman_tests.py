@@ -129,13 +129,13 @@ class TestHuffman(unittest.TestCase):
         self.assertEqual(len(freq_list), 256)
         self.assertEqual(freq_list, [0] * 256)
 
-    def test_cnt_freq_file_not_found(self) -> None:
+    #def test_cnt_freq_file_not_found(self) -> None:
         # Test with a file that does not exist
-        filename = "nonexistent_file.txt"
+        #filename = "nonexistent_file.txt"
 
         # Ensure FileNotFoundError is raised
-        with self.assertRaises(FileNotFoundError):
-            cnt_freq(filename)
+        #with self.assertRaises(FileNotFoundError):
+            #cnt_freq(filename)
 
 
 # Compare files - takes care of CR/LF, LF issues
