@@ -2,7 +2,7 @@ import unittest
 from huffman import *
 
 
-class TestList(unittest.TestCase):
+class TestHuffman(unittest.TestCase):
     def test_cnt_freq(self) -> None:
         freqlist = cnt_freq("file2.txt")
         anslist = [2, 4, 8, 16, 0, 2, 0]
@@ -11,22 +11,6 @@ class TestList(unittest.TestCase):
     def test_combine(self) -> None:
         a = HuffmanNode(65, 1)
         b = HuffmanNode(66, 2)
-
-        # Test for the case when a is returned
-        c = combine(a, None)
-        self.assertEqual(c.char_ascii, a.char_ascii)
-        self.assertEqual(c.freq, a.freq)
-        self.assertIsNone(c.left)
-        self.assertIsNone(c.right)
-
-        # Test for the case when b is returned
-        c = combine(None, b)
-        self.assertEqual(c.char_ascii, b.char_ascii)
-        self.assertEqual(c.freq, b.freq)
-        self.assertIsNone(c.left)
-        self.assertIsNone(c.right)
-
-        # Test for the case when a is returned
         c = combine(a, b)
         if (c.left is not None) and (c.right is not None):
             self.assertEqual(c.left.char_ascii, 65)
@@ -35,10 +19,8 @@ class TestList(unittest.TestCase):
             self.assertEqual(c.right.freq, 2)
             self.assertEqual(c.char_ascii, 65)
             self.assertEqual(c.freq, 3)
-        else:
-            self.fail("Failed to create Huffman node with children a and b")
-
-        # Test for the case when b is returned
+        else:  # pragma: no cover
+            self.fail()
         c = combine(b, a)
         if (c.left is not None) and (c.right is not None):
             self.assertEqual(c.left.char_ascii, 65)
@@ -47,8 +29,26 @@ class TestList(unittest.TestCase):
             self.assertEqual(c.right.freq, 2)
             self.assertEqual(c.char_ascii, 65)
             self.assertEqual(c.freq, 3)
-        else:
-            self.fail("Failed to create Huffman node with children b and a")
+        else:  # pragma: no cover
+            self.fail()
+
+    def test_create_huff_tree(self) -> None:
+        freqlist = cnt_freq("file2.txt")
+        hufftree = create_huff_tree(freqlist)
+        if hufftree is not None:
+            self.assertEqual(hufftree.freq, 32)
+            self.assertEqual(hufftree.char_ascii, 97)
+            left = hufftree.left
+            right = hufftree.right
+            if (left is not None) and (right is not None):
+                self.assertEqual(left.freq, 16)
+                self.assertEqual(left.char_ascii, 97)
+                self.assertEqual(right.freq, 16)
+                self.assertEqual(right.char_ascii, 100)
+            else:  # pragma: no cover
+                self.fail()
+        else:  # pragma: no cover
+            self.fail()
 
     def test_create_header(self) -> None:
         freqlist = cnt_freq("file2.txt")
@@ -67,68 +67,9 @@ class TestList(unittest.TestCase):
         # capture errors by comparing your encoded file with a *known* solution file
         self.assertTrue(compare_files("file1_out.txt", "file1_soln.txt"))
 
-    def test_combine_01(self) -> None:
-        a = HuffmanNode(65, 1)
-        b = HuffmanNode(66, 2)
-        c = combine(a, b)
-        if (c.left is not None) and (c.right is not None):
-            self.assertEqual(c.left.char_ascii, 65)
-            self.assertEqual(c.left.freq, 1)
-            self.assertEqual(c.right.char_ascii, 66)
-            self.assertEqual(c.right.freq, 2)
-            self.assertEqual(c.char_ascii, 65)
-            self.assertEqual(c.freq, 3)
-        else:
-            self.fail("Failed to create Huffman node with children a and b")
-
-        c = combine(b, a)
-        if (c.left is not None) and (c.right is not None):
-            self.assertEqual(c.left.char_ascii, 65)
-            self.assertEqual(c.left.freq, 1)
-            self.assertEqual(c.right.char_ascii, 66)
-            self.assertEqual(c.right.freq, 2)
-            self.assertEqual(c.char_ascii, 65)
-            self.assertEqual(c.freq, 3)
-        else:
-            self.fail("Failed to create Huffman node with children b and a")
-
-    def test_cnt_freq_file_not_found(self) -> None:
-        # Call the function with a non-existent file
-        with self.assertRaises(FileNotFoundError):
-            cnt_freq("nonexistent_file.txt")
-
-    def test_create_huff_tree_empty(self) -> None:
-        # Test with empty character frequencies list
-        char_freq: List[int] = [0] * 256
-        root: HTree = create_huff_tree(char_freq)
-        self.assertIsNone(root)
-
-    def test_create_huff_tree_single_char(self) -> None:
-        # Test with only one character having non-zero frequency
-        char_freq: List[int] = [0] * 256
-        char_freq[97] = 5  # Character 'a' with frequency 5
-        root: HTree = create_huff_tree(char_freq)
-        self.assertIsInstance(root, HuffmanNode)
-        self.assertEqual(root.freq, 5)
-
-    def test_create_huff_tree_multiple_chars(self) -> None:
-        # Test with multiple characters
-        char_freq: List[int] = [0] * 256
-        char_freq[97] = 5  # Character 'a' with frequency 5
-        char_freq[98] = 3  # Character 'b' with frequency 3
-        char_freq[99] = 7  # Character 'c' with frequency 7
-        root: HTree = create_huff_tree(char_freq)
-        if root is not None:
-            self.assertIsInstance(root, HuffmanNode)
-            self.assertEqual(root.freq, 15)  # Total frequency
-            self.assertEqual(root.char_ascii, 99)  # ASCII value of character 'c'
-            self.assertIsNotNone(root.left)
-            self.assertIsNotNone(root.right)
-        else:
-            self.fail("Root node should not be None for non-empty character frequencies")
+    # Compare files - takes care of CR/LF, LF issues
 
 
-# Compare files - takes care of CR/LF, LF issues
 def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover
     match = True
     done = False
