@@ -8,8 +8,8 @@ HTree: TypeAlias = Union[None, 'HuffmanNode']
 class HuffmanNode:
     char_ascii: int  # stored as an integer - the ASCII character code value
     freq: int  # the frequency associated with the node
-    left: HTree = None  # Huffman tree (node) to the left
-    right: HTree = None  # Huffman tree (node) to the right
+    left: 'HuffmanNode' = None  # Huffman tree (node) to the left
+    right: 'HuffmanNode' = None  # Huffman tree (node) to the right
 
     def __lt__(self, other: 'HuffmanNode') -> bool:
         return comes_before(self, other)
@@ -55,7 +55,7 @@ def cnt_freq(filename: str) -> List[int]:
     return frequencies
 
 
-def create_huff_tree(char_freq: List[int]) -> Union['HuffmanNode', None]:
+def create_huff_tree(char_freq: List[int]) -> Union[HuffmanNode, None]:
     """Input is the list of frequencies (provided by cnt_freq()).
     Create a Huffman tree for characters with non-zero frequency
     Returns the root node of the Huffman tree. Returns None if all counts are zero."""
@@ -92,7 +92,7 @@ def create_code(node: HuffmanNode) -> List[str]:
 def create_header(freqs: List[int]) -> str:
     """Input is the list of frequencies (provided by cnt_freq()).
     Creates and returns a header for the output file
-    Example: For the frequency list asscoaied with "aaabbbbcc, would return “97 3 98 4 99 2” """
+    Example: For the frequency list associated with "aaabbbbcc", would return “97 3 98 4 99 2” """
     header = []
     for i in range(256):
         if freqs[i] > 0:
@@ -109,7 +109,10 @@ def huffman_encode(in_file: str, out_file: str) -> None:
     header = create_header(freqs)
     with open(out_file, 'w', newline='') as file:
         file.write(header + '\n')
-        codes = create_code(create_huff_tree(freqs))
+        tree = create_huff_tree(freqs)
+        if tree is None:
+            return  # No need to proceed if the tree is None
+        codes = create_code(tree)
         with open(in_file, 'r') as input_file:
             for line in input_file:
                 for char in line:
