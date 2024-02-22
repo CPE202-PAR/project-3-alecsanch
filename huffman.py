@@ -45,19 +45,22 @@ def cnt_freq(filename: str) -> List[int]:
     frequencies = [0] * 256
     try:
         with open(filename, 'r') as file:
-            for line in file:
-                for char in line:
-                    frequencies[ord(char)] += 1
+            file_contents = file.read()
+            if not file_contents:  # Check if file is empty
+                raise ValueError("Input file is empty.")
+            for char in file_contents:
+                frequencies[ord(char)] += 1
     except FileNotFoundError:
-        print("File not found!")  # Print message to indicate file not found
         raise FileNotFoundError("File not found!")  # Raise FileNotFoundError
     return frequencies
 
 
-def create_huff_tree(char_freq: List[int]) -> Union[HuffmanNode, None]:
+def create_huff_tree(char_freq: List[int]) -> Union['HuffmanNode', None]:
     """Input is the list of frequencies (provided by cnt_freq()).
     Create a Huffman tree for characters with non-zero frequency
     Returns the root node of the Huffman tree. Returns None if all counts are zero."""
+    if all(freq == 0 for freq in char_freq):
+        return None  # Return None if all character frequencies are zero
     nodes = [HuffmanNode(i, char_freq[i]) for i in range(256) if char_freq[i] > 0]
     while len(nodes) > 1:
         nodes.sort()
@@ -78,8 +81,8 @@ def create_code(node: HuffmanNode) -> List[str]:
             return
         if node.char_ascii is not None:
             codes[node.char_ascii] = code
-        traverse(node.left, code + '0', codes)
-        traverse(node.right, code + '1', codes)
+        traverse(node.left, code + '0', codes) if node.left is not None else None
+        traverse(node.right, code + '1', codes) if node.right is not None else None
 
     codes = [''] * 256
     traverse(node, '', codes)
