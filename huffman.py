@@ -26,8 +26,10 @@ def comes_before(a: HuffmanNode, b: HuffmanNode) -> bool:
         return a.char_ascii < b.char_ascii
 
 
-def combine(a: HuffmanNode, b: HuffmanNode) -> HuffmanNode:
+def combine(a: Optional[HuffmanNode], b: Optional[HuffmanNode]) -> HuffmanNode:
     if a is None:
+        if b is None:
+            raise ValueError("Both arguments cannot be None")
         return b
     elif b is None:
         return a
@@ -64,7 +66,10 @@ def create_huff_tree(char_freq: List[int]) -> Optional[HuffmanNode]:
     return nodes[0] if nodes else None
 
 
-def create_code(node: HuffmanNode) -> List[str]:
+def create_code(node: Union[None, HuffmanNode]) -> List[str]:
+    if node is None:
+        return [''] * 256
+
     def traverse(node: HuffmanNode, code: str, codes: List[str]) -> None:
         if node is None:
             return
