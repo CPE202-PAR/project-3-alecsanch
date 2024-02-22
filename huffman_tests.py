@@ -138,7 +138,7 @@ class TestHuffman(unittest.TestCase):
 
         self.assertEqual(codes, expected_codes)
 
-    def test_header_written(self):
+    def test_header_written(self) -> None:
         # Test if the header is correctly written to the output file
         input_file = "sample.txt"
         output_file = "sample_out.txt"
@@ -149,7 +149,7 @@ class TestHuffman(unittest.TestCase):
             first_line = file.readline().strip()
             self.assertTrue(first_line.startswith("97"))  # Assuming ASCII value 97 corresponds to 'a'
 
-    def test_encoded_content_written(self):
+    def test_encoded_content_written(self) -> None:
         # Test if the encoded content is correctly written to the output file
         input_file = "sample.txt"
         output_file = "sample_out.txt"
