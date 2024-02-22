@@ -73,7 +73,7 @@ def create_code(node: HTree) -> List[str]:
         return [''] * 256
     codes = [''] * 256
 
-    def traverse(current_node: HuffmanNode, current_code: str):
+    def traverse(current_node: HuffmanNode, current_code: str) -> None:
         if current_node.left is None and current_node.right is None:
             codes[current_node.char_ascii] = current_code
         if current_node.left:
