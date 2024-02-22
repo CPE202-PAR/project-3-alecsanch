@@ -98,9 +98,10 @@ class TestList(unittest.TestCase):
             cnt_freq("nonexistent_file.txt")
 
     def test_create_huff_tree_empty(self) -> None:
-        char_freq = [0] * 256  # Creating a list with all frequencies set to zero
+        # Test with empty character frequencies list
+        char_freq: List[int] = [0] * 256
         root: HTree = create_huff_tree(char_freq)
-        self.assertIsNone(root)  # Check that the root is None when all frequencies are zero
+        self.assertIsNone(root)
 
     def test_create_huff_tree_single_char(self) -> None:
         # Test with only one character having non-zero frequency
