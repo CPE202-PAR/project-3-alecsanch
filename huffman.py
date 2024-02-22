@@ -26,14 +26,12 @@ def comes_before(a: HuffmanNode, b: HuffmanNode) -> bool:
         return a.char_ascii < b.char_ascii
 
 
-def combine(a: Optional[HuffmanNode], b: Optional[HuffmanNode]) -> HuffmanNode:
+def combine(a: HuffmanNode, b: HuffmanNode) -> HuffmanNode:
     if a is None:
-        if b is None:
-            raise ValueError("Both arguments cannot be None")
         return b
     elif b is None:
         return a
-    if comes_before(a, b):
+    if comes_before(a, b):  # Check if a comes before b
         return HuffmanNode(a.char_ascii, a.freq + b.freq, a, b)
     else:
         return HuffmanNode(b.char_ascii, a.freq + b.freq, b, a)
