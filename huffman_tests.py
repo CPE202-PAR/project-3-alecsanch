@@ -118,11 +118,15 @@ class TestList(unittest.TestCase):
         char_freq[98] = 3  # Character 'b' with frequency 3
         char_freq[99] = 7  # Character 'c' with frequency 7
         root: HTree = create_huff_tree(char_freq)
-        self.assertIsInstance(root, HuffmanNode)
-        self.assertEqual(root.freq, 15)  # Total frequency
-        self.assertEqual(root.char_ascii, 99)  # ASCII value of character 'c'
-        self.assertIsNotNone(root.left)
-        self.assertIsNotNone(root.right)
+        if root is not None:
+            self.assertIsInstance(root, HuffmanNode)
+            self.assertEqual(root.freq, 15)  # Total frequency
+            self.assertEqual(root.char_ascii, 99)  # ASCII value of character 'c'
+            self.assertIsNotNone(root.left)
+            self.assertIsNotNone(root.right)
+        else:
+            self.fail("Root node should not be None for non-empty character frequencies")
+
 
 # Compare files - takes care of CR/LF, LF issues
 def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover
