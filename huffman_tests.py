@@ -129,6 +129,15 @@ class TestHuffman(unittest.TestCase):
         self.assertEqual(len(freq_list), 256)
         self.assertEqual(freq_list, [0] * 256)
 
+    def test_create_code_empty_tree(self) -> None:
+        # Test with an empty tree
+        tree: HTree = None
+        expected_codes = [''] * 256
+
+        codes = create_code(tree)
+
+        self.assertEqual(codes, expected_codes)
+
     #def test_cnt_freq_file_not_found(self) -> None:
         # Test with a file that does not exist
         #filename = "nonexistent_file.txt"
