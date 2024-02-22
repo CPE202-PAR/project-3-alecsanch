@@ -98,16 +98,18 @@ def huffman_encode(in_file: str, out_file: str) -> None:
     """Takes input file name and output file name as parameters
     Uses the Huffman coding process on the text from the input file and writes encoded text to output file
     Take note of special cases - empty file and file with only one unique character"""
-    freq_list = cnt_freq(in_file)
-    huff_tree = create_huff_tree(freq_list)
-
-    if huff_tree is None:
-        with open(out_file, 'w') as file:
-            file.write('')
-    else:
-        codes = create_code(huff_tree)
-        with open(in_file, 'r') as infile:
-            with open(out_file, 'w') as outfile:
-                for line in infile:
-                    for char in line:
-                        outfile.write(codes[ord(char)])
+    freqs = cnt_freq(in_file)
+    header = create_header(freqs)
+    with open(out_file, 'w', newline='') as file:
+        file.write(header + '\n')
+        tree = create_huff_tree(freqs)
+        if tree is None:
+            return
+        codes = create_code(tree)
+        with open(in_file, 'r') as input_file:
+            for line in input_file:
+                for char in line:
+                    if 0 <= ord(char) < 256:
+                        file.write(codes[ord(char)])
+                    else:
+                        print(f"Ignoring character: {char} (Not in valid ASCII range)")
