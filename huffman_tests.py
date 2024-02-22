@@ -67,6 +67,29 @@ class TestHuffman(unittest.TestCase):
         # capture errors by comparing your encoded file with a *known* solution file
         self.assertTrue(compare_files("file1_out.txt", "file1_soln.txt"))
 
+    def test__lt__(self):
+        # Test when self node has lower frequency
+        node_a = HuffmanNode(97, 1)
+        node_b = HuffmanNode(98, 2)
+        self.assertTrue(node_a < node_b)
+
+        # Test when other node has lower frequency
+        node_c = HuffmanNode(99, 3)
+        node_d = HuffmanNode(100, 2)
+        self.assertFalse(node_c < node_d)
+
+        # Test when nodes have equal frequency but different ASCII values
+        node_e = HuffmanNode(101, 2)
+        node_f = HuffmanNode(102, 2)
+        self.assertTrue(node_e < node_f)
+        self.assertFalse(node_f < node_e)
+
+        # Test when nodes have equal frequency and ASCII values
+        node_g = HuffmanNode(103, 2)
+        node_h = HuffmanNode(103, 2)
+        self.assertFalse(node_g < node_h)
+        self.assertFalse(node_h < node_g)
+
 
 # Compare files - takes care of CR/LF, LF issues
 def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover
