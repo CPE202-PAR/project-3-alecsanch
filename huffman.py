@@ -95,54 +95,22 @@ def create_header(freqs: List[int]) -> str:
     return ' '.join(header)
 
 
-def huffman_encode(input_file: str, output_file: str, create_huff_tree=None, create_code=None) -> None:
-    """
-    Takes input file name and output file name as parameters.
-    Uses the Huffman coding process on the text from the input file and writes encoded text to output file.
-    Take note of special cases:
-    - Empty file: The output file will contain only the header information.
-    - File with only one unique character: All bits in the output file will represent the Huffman code for that character.
-
-    :param input_file: The path to the input file.
-    :param output_file: The path to the output file.
-    :param create_huff_tree: Function to create the Huffman tree.
-    :param create_code: Function to create the Huffman codes.
-    :return: None
-    """
-    try:
-        # Count frequencies of characters in the input file
-        frequencies = count_frequencies(input_file)
-
-        # Generate header for output file
-        header = generate_header(frequencies)
-
-        # Create Huffman tree
-        if create_huff_tree is None:
-            huff_tree = create_huffman_tree(frequencies)
-        else:
-            huff_tree = create_huff_tree(frequencies)
-
-        if huff_tree is None:
-            print("Error: Failed to create Huffman tree.")
+def huffman_encode(in_file: str, out_file: str) -> None:
+    """Takes input file name and output file name as parameters
+    Uses the Huffman coding process on the text from the input file and writes encoded text to output file
+    Take note of special cases - empty file and file with only one unique character"""
+    freqs = cnt_freq(in_file)
+    header = create_header(freqs)
+    with open(out_file, 'w', newline='') as file:
+        file.write(header + '\n')
+        tree = create_huff_tree(freqs)
+        if tree is None:
             return
-
-        # Create Huffman codes
-        if create_code is None:
-            codes = create_huffman_codes(huff_tree)
-        else:
-            codes = create_code(huff_tree)
-
-        # Encode input file and write to output file
-        with open(output_file, 'w') as out_file:
-            out_file.write(header + '\n')
-            with open(input_file, 'r') as in_file:
-                for line in in_file:
-                    for char in line:
-                        if 0 <= ord(char) < 256:
-                            out_file.write(codes[ord(char)])
-                        else:
-                            print(f"Ignoring character: {char} (Not in valid ASCII range)")
-    except FileNotFoundError:
-        print(f"Error: File not found: {input_file}")
-    except Exception as e:
-        print(f"Error: {e}")
+        codes = create_code(tree)
+        with open(in_file, 'r') as input_file:
+            for line in input_file:
+                for char in line:
+                    if 0 <= ord(char) < 256:
+                        file.write(codes[ord(char)])
+                    else:
+                        print(f"Ignoring character: {char} (Not in valid ASCII range)")
