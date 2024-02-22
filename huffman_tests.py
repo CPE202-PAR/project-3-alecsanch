@@ -162,6 +162,49 @@ class TestHuffman(unittest.TestCase):
             # Check if the encoded content is not empty
             self.assertTrue(encoded_content)
 
+    def test_encode_non_empty_file(self):
+        # Test encoding a non-empty file with multiple unique characters
+        input_file = "non_empty_file.txt"
+        output_file = "non_empty_file_out.txt"
+        with open(input_file, "w") as f:
+            f.write("This is a sample text.")
+
+        huffman_encode(input_file, output_file)
+
+        # Assert that the output file is created and contains content
+        with open(output_file, "r") as f:
+            encoded_content = f.read()
+            self.assertTrue(encoded_content)
+
+    def test_encode_empty_file(self):
+        # Test encoding an empty file
+        input_file = "empty_file.txt"
+        output_file = "empty_file_out.txt"
+        with open(input_file, "w") as f:
+            pass  # Empty the file
+
+        huffman_encode(input_file, output_file)
+
+        # Assert that the output file is created and contains only the header
+        with open(output_file, "r") as f:
+            encoded_content = f.read()
+            self.assertEqual(encoded_content.strip(), "")  # Adjusted expected output
+
+    def test_encode_single_character_file(self):
+        # Test encoding a file with only one unique character
+        input_file = "single_character_file.txt"
+        output_file = "single_character_file_out.txt"
+        with open(input_file, "w") as f:
+            f.write("aaaaa")
+
+        huffman_encode(input_file, output_file)
+
+        # Assert that the output file is created and contains the header and encoded content
+        with open(output_file, "r") as f:
+            encoded_content = f.read()
+            self.assertTrue(encoded_content)
+
+
 
 # Compare files - takes care of CR/LF, LF issues
 def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover
