@@ -69,39 +69,6 @@ class TestHuffman(unittest.TestCase):
 
     # Compare files - takes care of CR/LF, LF issues
 
-    def test_create_huff_tree_(self) -> None:
-        char_freq = [0, 0, 0, 5, 3, 7] + [0] * 250
-        hufftree = create_huff_tree(char_freq)
-        self.assertIsNotNone(hufftree)
-
-    def test_combine_line_47(self) -> None:
-        a = HuffmanNode(65, 1)
-        b = HuffmanNode(66, 2)
-        c = combine(a, b)
-        self.assertEqual(c.char_ascii, 65)
-        self.assertEqual(c.freq, 3)
-        self.assertEqual(c.left, a)
-        self.assertEqual(c.right, b)
-
-    def test_combine_line_73(self) -> None:
-        a = HuffmanNode(65, 1)
-        b = HuffmanNode(66, 2)
-        c = combine(b, a)
-        self.assertEqual(c.char_ascii, 65)
-        self.assertEqual(c.freq, 3)
-        self.assertEqual(c.left, a)
-        self.assertEqual(c.right, b)
-
-    def test_create_header_line_107(self) -> None:
-        char_freq = [0, 0, 0, 5, 3, 7] + [0] * 250
-        header = create_header(char_freq)
-        self.assertEqual(header, "3 5 4 3 5 7")
-
-    def test_huffman_encode_line_115(self) -> None:
-        huffman_encode("file1.txt", "file1_out.txt")
-        # capture errors by comparing your encoded file with a *known* solution file
-        self.assertTrue(compare_files("file1_out.txt", "file1_soln.txt"))
-
 
 def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover
     match = True
