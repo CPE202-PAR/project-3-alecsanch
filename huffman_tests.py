@@ -90,6 +90,53 @@ class TestHuffman(unittest.TestCase):
         self.assertFalse(node_g < node_h)
         self.assertFalse(node_h < node_g)
 
+    def test_cnt_freq(self) -> None:
+        # Test with a sample file
+        filename = "sample.txt"
+        expected_freq_list = [0] * 256
+        expected_freq_list[97] = 2  # ASCII value of 'a'
+        expected_freq_list[98] = 1  # ASCII value of 'b'
+        expected_freq_list[99] = 3  # ASCII value of 'c'
+        expected_freq_list[100] = 1  # ASCII value of 'd'
+
+        with open(filename, "w") as file:
+            file.write("aacccbd")
+
+        freq_list = cnt_freq(filename)
+
+        self.assertEqual(len(freq_list), 256)
+        self.assertEqual(freq_list, expected_freq_list)
+
+    def test_cnt_freq_empty_file(self) -> None:
+        # Test with an empty file
+        filename = "empty.txt"
+        expected_freq_list = [0] * 256
+
+        with open(filename, "w") as file:
+            file.write("")
+
+        freq_list = cnt_freq(filename)
+
+        self.assertEqual(len(freq_list), 256)
+        self.assertEqual(freq_list, expected_freq_list)
+
+    def test_cnt_freq_nonexistent_file(self) -> None:
+        # Test with a nonexistent file
+        filename = "nonexistent_file.txt"
+
+        freq_list = cnt_freq(filename)
+
+        self.assertEqual(len(freq_list), 256)
+        self.assertEqual(freq_list, [0] * 256)
+
+    def test_cnt_freq_file_not_found(self) -> None:
+        # Test with a file that does not exist
+        filename = "nonexistent_file.txt"
+
+        # Ensure FileNotFoundError is raised
+        with self.assertRaises(FileNotFoundError):
+            cnt_freq(filename)
+
 
 # Compare files - takes care of CR/LF, LF issues
 def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover
