@@ -139,6 +139,7 @@ class TestHuffman(unittest.TestCase):
         self.assertEqual(codes, expected_codes)
 
 
+
     #def test_cnt_freq_file_not_found(self) -> None:
         # Test with a file that does not exist
         #filename = "nonexistent_file.txt"
