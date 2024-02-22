@@ -138,15 +138,29 @@ class TestHuffman(unittest.TestCase):
 
         self.assertEqual(codes, expected_codes)
 
+    def test_header_written(self):
+        # Test if the header is correctly written to the output file
+        input_file = "sample.txt"
+        output_file = "sample_out.txt"
+        huffman_encode(input_file, output_file)
 
+        # Open the output file and check if the header is present in the first line
+        with open(output_file, 'r') as file:
+            first_line = file.readline().strip()
+            self.assertTrue(first_line.startswith("97"))  # Assuming ASCII value 97 corresponds to 'a'
 
-    #def test_cnt_freq_file_not_found(self) -> None:
-        # Test with a file that does not exist
-        #filename = "nonexistent_file.txt"
+    def test_encoded_content_written(self):
+        # Test if the encoded content is correctly written to the output file
+        input_file = "sample.txt"
+        output_file = "sample_out.txt"
+        huffman_encode(input_file, output_file)
 
-        # Ensure FileNotFoundError is raised
-        #with self.assertRaises(FileNotFoundError):
-            #cnt_freq(filename)
+        # Open the output file and check if the encoded content follows the header
+        with open(output_file, 'r') as file:
+            lines = file.readlines()[1:]  # Skip the first line (header)
+            encoded_content = ''.join(lines).strip()
+            # Check if the encoded content is not empty
+            self.assertTrue(encoded_content)
 
 
 # Compare files - takes care of CR/LF, LF issues
