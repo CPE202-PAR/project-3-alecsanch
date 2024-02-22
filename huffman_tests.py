@@ -67,7 +67,7 @@ class TestHuffman(unittest.TestCase):
         # capture errors by comparing your encoded file with a *known* solution file
         self.assertTrue(compare_files("file1_out.txt", "file1_soln.txt"))
 
-    def test__lt__(self):
+    def test__lt__(self) -> None:
         # Test when self node has lower frequency
         node_a = HuffmanNode(97, 1)
         node_b = HuffmanNode(98, 2)
