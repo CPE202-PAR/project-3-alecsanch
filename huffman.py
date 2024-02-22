@@ -54,7 +54,7 @@ def cnt_freq(filename: str) -> List[int]:
     return frequencies
 
 
-def create_huff_tree(char_freq: List[int]) -> HTree:
+def create_huff_tree(char_freq: List[int]) -> 'HuffmanNode':
     """Input is the list of frequencies (provided by cnt_freq()).
     Create a Huffman tree for characters with non-zero frequency
     Returns the root node of the Huffman tree. Returns None if all counts are zero."""
@@ -65,10 +65,7 @@ def create_huff_tree(char_freq: List[int]) -> HTree:
         right = nodes.pop(0)
         parent = combine(left, right)
         nodes.append(parent)
-    if nodes:
-        return nodes[0]
-    else:
-        return None
+    return nodes[0] if nodes else None
 
 
 def create_code(node: HTree) -> List[str]:
@@ -76,7 +73,7 @@ def create_code(node: HTree) -> List[str]:
     as the index into the array, with the resulting Huffman code for that character stored at that location.
     Characters that are unused should have an empty string at that location"""
 
-    def traverse(node: Union[None, HuffmanNode], code: str, codes: List[str]) -> None:
+    def traverse(node: 'HuffmanNode', code: str, codes: List[str]) -> None:
         """Helper function to traverse the Huffman tree and generate codes"""
         if node is None:
             return
