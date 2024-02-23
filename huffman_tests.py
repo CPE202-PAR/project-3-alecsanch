@@ -190,18 +190,6 @@ class TestHuffman(unittest.TestCase):
             encoded_content = f.read()
             self.assertEqual(encoded_content.strip(), "")  # Adjusted expected output
 
-    def test_iterate_over_lines(self) -> None:
-        # Simulate the behavior of iterating over lines in a file
-        lines = ["line1\n", "line2\n", "line3\n"]
-        expected_output = ["line1", "line2", "line3"]
-
-        # Iterate over the lines and collect the output
-        output = []
-        for line in lines:
-            output.append(line.strip())
-
-        # Assert that the output matches the expected output
-        self.assertEqual(output, expected_output)
     # Compare files - takes care of CR/LF, LF issues
 
 
