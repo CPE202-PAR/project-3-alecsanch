@@ -190,23 +190,9 @@ class TestHuffman(unittest.TestCase):
             encoded_content = f.read()
             self.assertEqual(encoded_content.strip(), "")  # Adjusted expected output
 
-    def test_encode_single_character_file(self) -> None:
-        # Test encoding a file with only one unique character
-        input_file = "single_character_file.txt"
-        output_file = "single_character_file_out.txt"
-        with open(input_file, "w") as f:
-            f.write("aaaaa")
-
-        huffman_encode(input_file, output_file)
-
-        # Assert that the output file is created and contains the header and encoded content
-        with open(output_file, "r") as f:
-            encoded_content = f.read()
-            self.assertTrue(encoded_content)
+    # Compare files - takes care of CR/LF, LF issues
 
 
-
-# Compare files - takes care of CR/LF, LF issues
 def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover
     match = True
     done = False

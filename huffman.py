@@ -107,10 +107,15 @@ def huffman_encode(in_file: str, out_file: str) -> None:
         if tree is None:
             return
         codes = create_code(tree)
-        with open(in_file, 'r') as input_file:
-            for line in input_file:
-                for char in line:
-                    if 0 <= ord(char) < 256:
-                        file.write(codes[ord(char)])
-                    else:
-                        print(f"Ignoring character: {char} (Not in valid ASCII range)")
+        if len(codes) == 1:
+            # If there is only one unique character, write its code to the output file
+            single_char_code = codes[ord(codes[0][0])]
+            file.write(single_char_code * freqs[ord(codes[0][0])])
+        else:
+            with open(in_file, 'r') as input_file:
+                for line in input_file:
+                    for char in line:
+                        if 0 <= ord(char) < 256:
+                            file.write(codes[ord(char)])
+                        else:
+                            print(f"Ignoring character: {char} (Not in valid ASCII range)")
