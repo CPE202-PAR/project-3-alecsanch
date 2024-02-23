@@ -190,6 +190,7 @@ class TestHuffman(unittest.TestCase):
             encoded_content = f.read()
             self.assertEqual(encoded_content.strip(), "")  # Adjusted expected output
 
+
     # Compare files - takes care of CR/LF, LF issues
 
 
