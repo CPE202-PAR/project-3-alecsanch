@@ -101,30 +101,13 @@ def huffman_encode(in_file: str, out_file: str) -> None:
     Take note of special cases - empty file and file with only one unique character"""
     freqs = cnt_freq(in_file)
     header = create_header(freqs)
-
-    # Handle special cases - empty file or file with only one unique character
-    if all(freq == 0 for freq in freqs):
-        # Empty file
-        with open(out_file, 'w', newline='') as file:
-            file.write(header + '\n')
-        return
-    elif freqs.count(0) == 255:  # Only one character in the file
-        char_code = create_code(HuffmanNode(freqs.index(max(freqs)), max(freqs)))
-        with open(out_file, 'w', newline='') as file:
-            file.write(header + '\n')
-            for _ in range(freqs[freqs.index(max(freqs))]):
-                file.write(char_code[ord(chr(freqs.index(max(freqs))))])
-        return
-
-    # Regular encoding process
-    tree = create_huff_tree(freqs)
-    if tree is None:
-        return
-
-    codes = create_code(tree)
-    with open(in_file, 'r') as input_file:
-        with open(out_file, 'w', newline='') as file:
-            file.write(header + '\n')
+    with open(out_file, 'w', newline='') as file:
+        file.write(header + '\n')
+        tree = create_huff_tree(freqs)
+        if tree is None:
+            return
+        codes = create_code(tree)
+        with open(in_file, 'r') as input_file:
             for line in input_file:
                 for char in line:
                     if 0 <= ord(char) < 256:
