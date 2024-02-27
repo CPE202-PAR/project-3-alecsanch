@@ -120,45 +120,36 @@ def huffman_encode(in_file: str, out_file: str) -> None:
 
 def huffman_decode(encoded_file: str, decode_file: str) -> None:
     """Reads an encoded file and writes the decoded text to an output file using the recreated Huffman tree."""
-    # Check if the encoded file exists
     if not os.path.exists(encoded_file):
         raise FileNotFoundError(f"Encoded file not found: {encoded_file}")
 
-    try:
-        # Read encoded file
-        with open(encoded_file, 'r') as file:
-            # Read header
-            header = file.readline().strip()
-            # Parse header to create list of frequencies
-            freq_list = parse_header(header)
-            # Recreate Huffman tree
-            huffman_tree = create_huff_tree(freq_list)
+    with open(encoded_file, 'r') as first:
+        header = first.readline().strip('\n')
 
-            # Open output file for writing decoded text
-            with open(decode_file, 'w') as output_file:
-                # Start with root node
-                current_node = huffman_tree
+        if len(header) <= 1:
+            raise ValueError("Malformed header")
 
-                # Read remaining lines (encoded text) from file
-                for line in file:
-                    # Iterate over characters in line
-                    for char in line.strip():
-                        # Navigate Huffman tree based on encoded bits
-                        if char == '0':
-                            current_node = current_node.left
-                        elif char == '1':
-                            current_node = current_node.right
+        freq_list = parse_header(header)
 
-                        # Check if leaf node is reached
-                        if current_node.left is None and current_node.right is None:
-                            # Write decoded character to output file
-                            output_file.write(chr(current_node.char_ascii))
-                            # Reset current_node to root for next character
-                            current_node = huffman_tree
+        huffman_tree = create_huff_tree(freq_list)
 
-    except FileNotFoundError:
-        print(f"Error decoding: {encoded_file}")
-        raise
+        with open(decode_file, 'w') as output_file:
+            encoded_data = first.read()
+
+            decoded_data = ''
+
+            current_node = huffman_tree
+
+            for num in encoded_data:
+                if num == '0' and current_node is not None:
+                    current_node = current_node.left
+                elif num == '1' and current_node is not None:
+                    current_node = current_node.right
+                if current_node is not None and current_node.left is None and current_node.right is None:
+                    decoded_data += chr(current_node.char_ascii)
+                    current_node = huffman_tree
+
+            output_file.write(decoded_data)
 
 
 def parse_header(header_string: str) -> List[int]:
