@@ -216,6 +216,16 @@ class TestHuffman(unittest.TestCase):
         anslist[97:104] = [2, 4, 8, 16, 0, 2, 0]
         self.assertListEqual(freqlist[97:104], anslist[97:104])
 
+    def test_create_header_(self):
+        # Test case where all frequencies are zero
+        freqs_zero = [0] * 256
+        self.assertEqual(create_header(freqs_zero), '')
+
+        # Test case with non-zero frequencies
+        freqs_non_zero = [0, 2, 4, 0, 1, 0] + [0] * 250  # Only a few frequencies are non-zero
+        expected_header = '1 2 2 4 4 1'
+        self.assertEqual(create_header(freqs_non_zero), expected_header)
+
 
 def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover
     match = True
