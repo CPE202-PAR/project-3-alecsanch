@@ -204,7 +204,7 @@ class TestHuffman(unittest.TestCase):
 
     def test_decode_02(self) -> None:
         huffman_decode("declaration_soln.txt", "declaration_decode.txt")
-        # detect errors by comparing your encoded file with a *known* solution file
+        # Compare files to detect errors
         self.assertTrue(compare_files("declaration.txt", "declaration_decode.txt"))
 
         # Compare files - takes care of CR/LF, LF issues
@@ -225,6 +225,33 @@ class TestHuffman(unittest.TestCase):
         freqs_non_zero = [0, 2, 4, 0, 1, 0] + [0] * 250  # Only a few frequencies are non-zero
         expected_header = '1 2 2 4 4 1'
         self.assertEqual(create_header(freqs_non_zero), expected_header)
+
+    def test_huffman_decode_nonexistent_file(self) -> None:
+        # Test decoding a nonexistent file
+        with self.assertRaises(FileNotFoundError):
+            huffman_decode("nonexistent_encoded_file.txt", "decoded_output.txt")
+
+    def test_huffman_decode_empty_header(self) -> None:
+        # Test decoding a file with an empty header
+        with open("empty_header_encoded.txt", "w") as f:
+            f.write("")
+
+        with self.assertRaises(ValueError):
+            huffman_decode("empty_header_encoded.txt", "decoded_output.txt")
+
+    def test_huffman_decode_single_character_file(self) -> None:
+        # Test decoding a file with only one character
+        huffman_decode("file_single_char_soln.txt", "file_single_char_decode.txt")
+        # Compare files to detect errors
+        self.assertTrue(compare_files("file_single_char.txt", "file_single_char_decode.txt"))
+
+    def test_create_huff_tree_single_character_file(self) -> None:
+        # Test with a file containing a single character
+        freqlist = cnt_freq("file_single_char.txt")
+        hufftree = create_huff_tree(freqlist)
+        self.assertIsNotNone(hufftree)
+        self.assertEqual(hufftree.char_ascii, ord('a'))  # Assuming the character is 'a'
+        self.assertEqual(hufftree.freq, 1)
 
 
 def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover

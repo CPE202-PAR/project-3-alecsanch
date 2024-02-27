@@ -58,6 +58,9 @@ def create_huff_tree(char_freq: List[int]) -> HTree:
     Returns the root node of the Huffman tree. Returns None if all counts are zero."""
     nodes = [HuffmanNode(i, freq) for i, freq in enumerate(char_freq) if freq > 0]
 
+    if len(nodes) == 1:
+        return nodes[0]
+
     while len(nodes) > 1:
         nodes.sort(key=lambda x: (x.freq, x.char_ascii))
         left = nodes.pop(0)
@@ -137,7 +140,6 @@ def huffman_decode(encoded_file: str, decode_file: str) -> None:
             encoded_data = first.read()
 
             decoded_data = ''
-
             current_node = huffman_tree
 
             for num in encoded_data:
