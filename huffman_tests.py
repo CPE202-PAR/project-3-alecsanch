@@ -190,8 +190,24 @@ class TestHuffman(unittest.TestCase):
             encoded_content = f.read()
             self.assertEqual(encoded_content.strip(), "")  # Adjusted expected output
 
+    def test_parse_header(self) -> None:
+        header = "97 2 98 4 99 8 100 16 102 2"
+        freqlist = parse_header(header)
+        anslist = [0] * 256
+        anslist[97:104] = [2, 4, 8, 16, 0, 2, 0]
+        self.assertListEqual(freqlist[97:104], anslist[97:104])
 
-    # Compare files - takes care of CR/LF, LF issues
+    def test_decode_01(self) -> None:
+        huffman_decode("file1_soln.txt", "file1_decode.txt")
+        # detect errors by comparing your encoded file with a *known* solution file
+        self.assertTrue(compare_files("file1.txt", "file1_decode.txt"))
+
+    def test_decode_02(self) -> None:
+        huffman_decode("declaration_soln.txt", "declaration_decode.txt")
+        # detect errors by comparing your encoded file with a *known* solution file
+        self.assertTrue(compare_files("declaration.txt", "declaration_decode.txt"))
+
+        # Compare files - takes care of CR/LF, LF issues
 
 
 def compare_files(file1: str, file2: str) -> bool:  # pragma: no cover

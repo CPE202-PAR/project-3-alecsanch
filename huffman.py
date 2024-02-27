@@ -1,14 +1,16 @@
+import os
 from dataclasses import dataclass
 from typing import List, Union, TypeAlias
 
 HTree: TypeAlias = Union[None, 'HuffmanNode']
 
+
 @dataclass
 class HuffmanNode:
-    char_ascii: int         # stored as an integer - the ASCII character code value
-    freq: int               # the frequency associated with the node
-    left: HTree = None      # Huffman tree (node) to the left
-    right: HTree = None     # Huffman tree (node) to the right
+    char_ascii: int  # stored as an integer - the ASCII character code value
+    freq: int  # the frequency associated with the node
+    left: HTree = None  # Huffman tree (node) to the left
+    right: HTree = None  # Huffman tree (node) to the right
 
     def __lt__(self, other: 'HuffmanNode') -> bool:
         """Returns True if tree rooted at node a comes before tree rooted at node b, False otherwise"""
@@ -114,3 +116,61 @@ def huffman_encode(in_file: str, out_file: str) -> None:
                         file.write(codes[ord(char)])
                     else:
                         print(f"Ignoring character: {char} (Not in valid ASCII range)")
+
+
+def huffman_decode(encoded_file: str, decode_file: str) -> None:
+    """Reads an encoded file and writes the decoded text to an output file using the recreated Huffman tree."""
+    # Check if the encoded file exists
+    if not os.path.exists(encoded_file):
+        raise FileNotFoundError(f"Encoded file not found: {encoded_file}")
+
+    try:
+        # Read encoded file
+        with open(encoded_file, 'r') as file:
+            # Read header
+            header = file.readline().strip()
+            # Parse header to create list of frequencies
+            freq_list = parse_header(header)
+            # Recreate Huffman tree
+            huffman_tree = create_huff_tree(freq_list)
+
+            # Open output file for writing decoded text
+            with open(decode_file, 'w') as output_file:
+                # Start with root node
+                current_node = huffman_tree
+
+                # Read remaining lines (encoded text) from file
+                for line in file:
+                    # Iterate over characters in line
+                    for char in line.strip():
+                        # Navigate Huffman tree based on encoded bits
+                        if char == '0':
+                            current_node = current_node.left
+                        elif char == '1':
+                            current_node = current_node.right
+
+                        # Check if leaf node is reached
+                        if current_node.left is None and current_node.right is None:
+                            # Write decoded character to output file
+                            output_file.write(chr(current_node.char_ascii))
+                            # Reset current_node to root for next character
+                            current_node = huffman_tree
+
+    except FileNotFoundError:
+        print(f"Error decoding: {encoded_file}")
+        raise
+
+
+def parse_header(header_string: str) -> List[int]:
+    """Parses the header string to create a list of frequencies."""
+    freq_list = [0] * 256
+    header_list = header_string.split()
+    try:
+        for i in range(0, len(header_list), 2):
+            char_ascii = int(header_list[i])
+            freq = int(header_list[i + 1])
+            freq_list[char_ascii] = freq
+    except (ValueError, IndexError):
+        print("Error: Malformed header string.")
+        return freq_list
+    return freq_list
