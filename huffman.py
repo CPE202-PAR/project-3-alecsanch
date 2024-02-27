@@ -171,6 +171,5 @@ def parse_header(header_string: str) -> List[int]:
             freq = int(header_list[i + 1])
             freq_list[char_ascii] = freq
     except (ValueError, IndexError):
-        print("Error: Malformed header string.")
-        return freq_list
+        raise ValueError("Malformed header string.")
     return freq_list
