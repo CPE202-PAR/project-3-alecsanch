@@ -209,14 +209,14 @@ class TestHuffman(unittest.TestCase):
 
         # Compare files - takes care of CR/LF, LF issues
 
-    def test_parse_header_1(self):
+    def test_parse_header_1(self) -> None:
         header = "97 2 98 4 99 8 100 16 102 2"
         freqlist = parse_header(header)
         anslist = [0] * 256
         anslist[97:104] = [2, 4, 8, 16, 0, 2, 0]
         self.assertListEqual(freqlist[97:104], anslist[97:104])
 
-    def test_create_header_(self):
+    def test_create_header_(self) -> None:
         # Test case where all frequencies are zero
         freqs_zero = [0] * 256
         self.assertEqual(create_header(freqs_zero), '')
